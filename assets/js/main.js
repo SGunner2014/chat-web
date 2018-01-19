@@ -1,5 +1,5 @@
-var app = angular.module("mainApp", []);
-app.controller("mainCont", function($scope) {
+var app = angular.module("mainApp", ['ngSanitize']);
+app.controller("mainCont", ['$scope', '$sce', function($scope, $sce) {
     $scope.interact = function() {
         var http = new XMLHttpRequest();
         var url = "//localhost/chat-web/assets/php/getLoginCredentials.php";
@@ -46,14 +46,26 @@ app.controller("mainCont", function($scope) {
                 "authorname": data.authorname
             };
 
-            if (data.authorid !== $scope.currentUser.userid && data.authorid !== null && data.userid !== $scope.currentUser.userid) {
+            console.log(data);
+
+            if (data.origin === "SERVER" && data.mode === "MESSAGE") {
+                msgObj.content = $sce.trustAsHtml("<div>" + isolateLink(data.content) + "</div>");
                 $scope.messages.unshift(msgObj);
                 $scope.$apply();
+
+            } else if (data.mode === "AUTHENTICATE_RESPONSE") {
+                    if (data.content === "FAIL") {
+                        $scope.socket.close();
+                        window.location.href = "logout.php?reason=invalidtoken";
+                    }
+            } else if (data.mode === "SESSION_EXPIRED") {
+                $scope.socket.close();
+                window.location.href = "logout.php?reason=invalidtoken";
             }
         };
 
         $scope.socket.onclose = function() {
-            alert("Lost connection to the server")
+            console.log("Disconnected from server");
         };
 
         $scope.sendmessageclick = function() {
@@ -68,14 +80,29 @@ app.controller("mainCont", function($scope) {
                 "content": text,
                 "mode": "MESSAGE",
                 "authorid": $scope.currentUser.userid,
-                "authorname": $scope.currentUser.username
+                "authorname": $scope.currentUser.username,
+                "token": $scope.currentUser.token
             };
 
             var message = JSON.stringify(obj);
             $scope.socket.send(message);
-            $scope.messages.unshift(obj);
+            //$scope.messages.unshift(obj);
         };
 
     } else {
+    }
+}]);
+
+app.directive('compileTemplate', function($compile, $parse){
+    return {
+        link: function(scope, element, attr){
+            var parsed = $parse(attr.ngBindHtml);
+            function getStringValue() { return (parsed(scope) || '').toString(); }
+
+            //Recompile if the template changes
+            scope.$watch(getStringValue, function() {
+                $compile(element, null, -9999)(scope);  //The -9999 makes it skip directives so that we do not recompile ourselves
+            });
+        }
     }
 });

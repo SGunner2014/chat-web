@@ -9,4 +9,15 @@
 session_start();
 session_destroy();
 session_unset();
-header("Location: index.php");
+
+if (isset($_GET["reason"])) {
+    if ($_GET["reason"] == "invalidtoken") {
+        require_once("assets/php/utils.class.php");
+        utils::issueHeader();
+        require_once("assets/html/errors/invalidtoken.html");
+    } else {
+        header("Location: index.php");
+    }
+} else {
+    header("Location: index.php");
+}
