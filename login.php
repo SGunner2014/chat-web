@@ -11,9 +11,9 @@ require_once("assets/php/utils.class.php");
 
 if (isset($_POST["username"], $_POST["password"])) {
     $tokenDetails = utils::login($_POST["username"], $_POST["password"]);
-    $_SESSION["chat-web-token"] = $tokenDetails["token"];
-    $_SESSION["chat-web-userid"] = $tokenDetails["userid"];
-    $_SESSION["chat-web-username"] = $tokenDetails["username"];
+    $_SESSION["sgunnerme-token"] = $tokenDetails["token"];
+    $_SESSION["sgunnerme-userid"] = $tokenDetails["userid"];
+    $_SESSION["sgunnerme-username"] = $tokenDetails["username"];
     header("Location: chat.php");
 }
 

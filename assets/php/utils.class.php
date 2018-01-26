@@ -19,7 +19,7 @@ class utils
      * @return True if the current user is logged in, false if not.
      */
     public static function isLoggedIn() {
-        if (isset($_SESSION["chat-web-userid"])) {
+        if (isset($_SESSION["sgunnerme-userid"])) {
             return true;
         } else {
             return false;
