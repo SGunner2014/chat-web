@@ -10,7 +10,7 @@
 const ADDRESS = 'localhost';
 const USER = 'root';
 const PASS = '';
-const NAME = 'chat';
+const NAME = 'sgunner-me';
 
 class db {
     private $conn;
