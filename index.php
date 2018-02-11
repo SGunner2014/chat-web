@@ -1,6 +1,6 @@
 <?php
-    require_once("assets/php/utils.class.php");
-    utils::issueHeader();
+    require_once("assets/php/Utilities.php");
+    Utilities::issueHeader();
 ?>
 
 <html>

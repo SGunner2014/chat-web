@@ -9,11 +9,12 @@
  * Used for general utilities.
  */
 
-require_once("db.class.php");
+
 
 session_start();
+require_once("Database.php");
 
-class utils
+class Utilities
 {
     /**
      * @return True if the current user is logged in, false if not.
@@ -59,7 +60,7 @@ class utils
      * @return array The dump from the operation
      */
     public static function verifyLogin($username, $password) {
-        $db = new db();
+        $db = new Database();
         $records = $db->select("users", "username", $username); //get hold of details of user_error
         if (mysqli_num_rows($records) == 1) { //Check that the user exists
             $record = mysqli_fetch_assoc($records);
@@ -83,7 +84,7 @@ class utils
      * @return bool Whether or not the user exists
      */
     public static function userExists($username) {
-        $db = new db();
+        $db = new Database();
 
         if ($db->getOccurences("users", "username", $username) >= 1) {
             return true;
@@ -97,7 +98,7 @@ class utils
      * @return String The token for the newly-logged in user
      */
     public static function registerUser($username, $password) {
-        $db = new db();
+        $db = new Database();
 
         if (self::userExists($username)) {
             return false;
@@ -141,7 +142,7 @@ class utils
      * @return String the userid of the user
      */
     public static function useridFromUsername($username) {
-        $db = new db();
+        $db = new Database();
         $records = $db->select("users", "username", $username);
         $rec = mysqli_fetch_assoc($records);
         return $rec["id"];
@@ -155,7 +156,7 @@ class utils
      */
     public static function login($username, $password) {
         if (self::verifyLogin($username, $password)) {
-            $db = new db();
+            $db = new Database();
 
             $newtoken = self::generateSalt() . self::generateSalt() . self::generateSalt();
 

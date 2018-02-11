@@ -6,19 +6,19 @@
  * Time: 07:22
  */
 
-require_once("assets/php/utils.class.php");
+require_once("assets/php/Utilities.php");
 
 
 if (isset($_POST["username"], $_POST["password"])) {
     echo "done";
-    $tokenDetails = utils::registerUser($_POST["username"], $_POST["password"]);
+    $tokenDetails = Utilities::registerUser($_POST["username"], $_POST["password"]);
     $_SESSION["chat-web-token"] = $tokenDetails["token"];
     $_SESSION["chat-web-userid"] = $tokenDetails["userid"];
     $_SESSION["chat-web-username"] = $tokenDetails["username"];
     header("Location: chat.php");
 }
 
-utils::issueHeader();
+Utilities::issueHeader();
 ?>
 
 <!DOCTYPE html>

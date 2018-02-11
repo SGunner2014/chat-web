@@ -6,8 +6,14 @@
  * Time: 09:55
  */
 
-require_once("assets/php/utils.class.php");
-utils::issueHeader();
+require_once("assets/php/Utilities.php");
+
+require_once("assets/php/Database.php");
+if (!Utilities::isLoggedIn()) {
+    header("Location: login.php?reason=loggedout");
+}
+
+Utilities::issueHeader();
 ?>
 
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-sanitize.min.js"></script>

@@ -12,8 +12,8 @@ session_unset();
 
 if (isset($_GET["reason"])) {
     if ($_GET["reason"] == "invalidtoken") {
-        require_once("assets/php/utils.class.php");
-        utils::issueHeader();
+        require_once("assets/php/Utilities.php");
+        Utilities::issueHeader();
         require_once("assets/html/errors/invalidtoken.html");
     } else {
         header("Location: index.php");

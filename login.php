@@ -6,18 +6,26 @@
  * Time: 07:22
  */
 
-require_once("assets/php/utils.class.php");
+require_once("assets/php/Utilities.php");
 
 
 if (isset($_POST["username"], $_POST["password"])) {
-    $tokenDetails = utils::login($_POST["username"], $_POST["password"]);
+    $tokenDetails = Utilities::login($_POST["username"], $_POST["password"]);
     $_SESSION["sgunnerme-token"] = $tokenDetails["token"];
     $_SESSION["sgunnerme-userid"] = $tokenDetails["userid"];
     $_SESSION["sgunnerme-username"] = $tokenDetails["username"];
     header("Location: chat.php");
 }
 
-utils::issueHeader();
+Utilities::issueHeader();
+
+
+if (isset($_GET["reason"])) {
+    $reason = $_GET["reason"];
+    if ($reason == "loggedout") {
+        require_once("assets/html/errors/loggedouterror.html");
+    }
+}
 ?>
 
 <!DOCTYPE html>

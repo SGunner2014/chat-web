@@ -12,7 +12,7 @@ const USER = 'root';
 const PASS = '';
 const NAME = 'sgunner-me';
 
-class db {
+class Database {
     private $conn;
 
     //Constructor - initialises database connection
